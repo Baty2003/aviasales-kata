@@ -1,3 +1,1 @@
-import FiltersCountTransfers from './FiltersCountTransfers';
-
-export default FiltersCountTransfers;
+export { default as FiltersCountTransfers } from './FiltersCountTransfers';

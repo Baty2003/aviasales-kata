@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import CardFlight from '../CardFlight';
+import { CardFlight } from '../CardFlight';
 
 import listFlightsStyle from './ListFlights.module.scss';
 const ListFlights = (props) => {

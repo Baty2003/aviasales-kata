@@ -1,3 +1,1 @@
-import FiltersFlights from './FiltersFlights';
-
-export default FiltersFlights;
+export { default as FiltersFlights } from './FiltersFlights';

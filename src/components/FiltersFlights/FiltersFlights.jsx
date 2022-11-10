@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import RadioButton from '../RadioButton';
+import { RadioButton } from '../RadioButton';
 import * as actions from '../../redux/actions';
 
 import filtresFlightStyle from './FiltersFlights.module.scss';

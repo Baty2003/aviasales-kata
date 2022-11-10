@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import { reducerSort, reducerTickets, reducerTransfer } from './redux/reducer';
-import App from './components/App';
+import { App } from './components/App';
 import { incBadRequest, requestSearchId, requestTickets, setErrorGetTickets } from './redux/actions';
 
 const store = configureStore(

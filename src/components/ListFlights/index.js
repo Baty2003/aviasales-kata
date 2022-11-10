@@ -1,3 +1,1 @@
-import ListFlights from './ListFlights';
-
-export default ListFlights;
+export { default as ListFlights } from './ListFlights';

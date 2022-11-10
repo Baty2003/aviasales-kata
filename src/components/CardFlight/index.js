@@ -1,3 +1,1 @@
-import CardFlight from './CardFlight';
-
-export default CardFlight;
+export { default as CardFlight } from './CardFlight';

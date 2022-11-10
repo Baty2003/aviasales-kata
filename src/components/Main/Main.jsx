@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import FiltersCountTransfers from '../FiltersCountTransfers';
-import FiltersFlights from '../FiltersFlights';
-import Button from '../Button';
-import ListFlight from '../ListFlights';
+import { FiltersCountTransfers } from '../FiltersCountTransfers';
+import { FiltersFlights } from '../FiltersFlights';
+import { Button } from '../Button';
+import { ListFlights } from '../ListFlights';
 
 import mainStyle from './Main.module.scss';
 
@@ -104,7 +104,7 @@ const Main = (props) => {
         <FiltersCountTransfers className={mainStyle['filters-count-transfers']} />
         <div className={mainStyle['content']}>
           <FiltersFlights />
-          <ListFlight
+          <ListFlights
             className={mainStyle['list-flight']}
             loading={checkFiltersFalse() ? false : loading}
             items={sortAndFilterTickets()}
