@@ -1,0 +1,36 @@
+.flex{
+	display: grid;
+	grid-template-columns: minmax(190px, 232px) minmax(400px, 1fr);
+	column-gap: 20px;
+
+	@media (max-width:650px) {
+		&{
+			grid-template-columns: minmax(190px, 232px) minmax(200px, 1fr);
+		}
+	}
+
+	@media (max-width:605px) {
+		&{
+			display: block;
+		}
+	}
+}
+
+.filters-count-transfers{
+	@media (max-width:605px) {
+		&{
+			margin-bottom: 20px;
+		}
+	}
+}
+
+.content{
+	width: 100%;
+}
+
+.list-flight{
+	margin-top: 20px;
+}
+.button{
+	width: 100%;
+}

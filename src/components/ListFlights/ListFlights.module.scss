@@ -1,0 +1,41 @@
+.list-flight{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.card-flight{
+	margin-bottom: 20px;
+}
+
+.loading{
+	width: 100%;
+	height: 20px;
+	border: 2px solid #2196F3;
+	border-radius: 10px;
+	margin-bottom: 10px;
+
+	animation-duration: 5s;
+	animation-name: slidein;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+.error-message{
+	padding: 10px;
+	border: red 2px solid;
+	color: red;
+	background-color: rgba(255, 0, 0, 0.212);
+}
+
+
+@keyframes slidein {
+	from {
+	  width: 0;
+	}
+  
+	to {
+		background-color: #2196F3;
+		width: 100%;
+	}
+  }

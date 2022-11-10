@@ -1,0 +1,57 @@
+.card-flight {
+	background-color: white;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+
+	.top-card {
+		display: flex;
+		justify-content:space-between;
+		align-items: center;
+		margin-bottom: 20px;
+	}
+
+	.cost {
+		color: #2196F3;
+		font-size: 24px;
+		line-height: 24px;
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.logo-airline {
+		display: block;
+		
+	}
+
+	.info-flight {
+		width: 100%;
+	}
+
+	.table-info-flight {
+		width: 100%;
+		&--mb10px{
+			margin-bottom: 10px;
+		}
+	}
+
+	.tr {
+		text-align: left;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.th {
+		color: #A0B0B9;
+		font-weight: 600;
+		font-size: 12px;
+		text-transform: uppercase;
+		line-height: 18px;
+	}
+
+	.td {
+		font-weight: 600;
+		font-size: 12px;
+		line-height: 18px;
+	}
+}
