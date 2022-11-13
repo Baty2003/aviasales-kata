@@ -3,7 +3,6 @@ import React from 'react';
 import { Main } from '../Main';
 
 import appStyle from './App.module.scss';
-
 const App = () => {
   return (
     <div className={appStyle['container']}>

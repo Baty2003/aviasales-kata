@@ -98,6 +98,7 @@ const Main = (props) => {
   };
 
   const { loading, error } = props;
+
   return (
     <main>
       <section className={mainStyle['flex']}>
@@ -112,9 +113,8 @@ const Main = (props) => {
           />
           <Button
             className={mainStyle['button']}
-            onClick={() => {
-              setCountShowCard((state) => state + ADD_TICKETS_SHOW);
-            }}
+            onClick={() => setCountShowCard((state) => state + ADD_TICKETS_SHOW)}
+            ariaLabel="Показать больше билетов"
           >
             {checkFiltersFalse() ? 'Вы не выбрали ни одного фильтра' : `Показать еще ${ADD_TICKETS_SHOW} билетов`}
           </Button>

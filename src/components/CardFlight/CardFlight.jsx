@@ -4,6 +4,8 @@ import { default as addDate } from 'date-fns/add';
 import PropTypes from 'prop-types';
 
 import cardFlightStyle from './CardFlight.module.scss';
+import logosAvialines from './assets/logos-avialines';
+
 const CardFlight = (props) => {
   const { segments, carrier, price } = props;
 
@@ -23,35 +25,30 @@ const CardFlight = (props) => {
     return `${hours}ч ${minutes}м`;
   };
 
-  const getLogoAirLine = (codeAirline) => `//pics.avs.io/99/36/${codeAirline}.png`;
-
   return (
     <div className={`${cardFlightStyle['card-flight']} ${props.className ? props.className : null}`}>
       <div className={cardFlightStyle['top-card']}>
         <p className={cardFlightStyle['cost']}>{price}Р</p>
-        <img src={getLogoAirLine(carrier)} alt="" className={cardFlightStyle['logo-airline']} />
+        <img src={logosAvialines[carrier]} alt="" className={cardFlightStyle['logo-airline']} />
       </div>
       <div className={cardFlightStyle['info-flight']}>
         {segments.map((segment, index) => {
           const { destination, duration, origin, date, stops } = segment;
           return (
-            <table
-              key={index}
-              className={`${cardFlightStyle['table-info-flight']} ${cardFlightStyle['table-info-flight--mb10px']}`}
-            >
-              <tbody>
-                <tr className={cardFlightStyle['tr']}>
-                  <th className={cardFlightStyle['th']}>{`${destination}-${origin}`}</th>
-                  <th className={cardFlightStyle['th']}>В пути</th>
-                  <th className={cardFlightStyle['th']}>{stops.length + ' ' + sklonenie(stops.length)}</th>
-                </tr>
-                <tr className={cardFlightStyle['tr']}>
-                  <td className={cardFlightStyle['td']}>{formatedTimeForCard(date, duration)}</td>
-                  <td className={cardFlightStyle['td']}>{calculateDuration(duration)}</td>
-                  <td className={cardFlightStyle['td']}>{stops.join(', ')}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div key={index} className={cardFlightStyle['block']}>
+              <div className={cardFlightStyle['piece']}>
+                <span className={cardFlightStyle['head-piece']}>{`${destination}-${origin}`}</span>
+                <span className={cardFlightStyle['info-piece']}>{formatedTimeForCard(date, duration)}</span>
+              </div>
+              <div className={cardFlightStyle['piece']}>
+                <span className={cardFlightStyle['head-piece']}>В пути</span>
+                <span className={cardFlightStyle['info-piece']}>{calculateDuration(duration)}</span>
+              </div>
+              <div className={cardFlightStyle['piece']}>
+                <span className={cardFlightStyle['head-piece']}>{stops.length + ' ' + sklonenie(stops.length)}</span>
+                <span className={cardFlightStyle['info-piece']}>{stops.join(', ')}</span>
+              </div>
+            </div>
           );
         })}
       </div>

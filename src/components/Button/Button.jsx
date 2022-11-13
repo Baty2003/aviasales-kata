@@ -3,9 +3,14 @@ import React from 'react';
 
 import buttonStyle from './Button.module.scss';
 const Button = (props) => {
+  const { className, onClick, ariaLabel, children } = props;
   return (
-    <button className={`${buttonStyle['button']} ${props.className ? props.className : ''}`} onClick={props.onClick}>
-      {props.children}
+    <button
+      className={`${buttonStyle['button']} ${className ? className : ''}`}
+      onClick={onClick}
+      aria-label={ariaLabel}
+    >
+      {children}
     </button>
   );
 };
