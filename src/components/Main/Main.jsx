@@ -5,6 +5,7 @@ import { FiltersCountTransfers } from '../FiltersCountTransfers';
 import { FiltersFlights } from '../FiltersFlights';
 import { Button } from '../Button';
 import { ListFlights } from '../ListFlights';
+import { setTransferFilter } from '../../redux/actions';
 
 import mainStyle from './Main.module.scss';
 
@@ -27,12 +28,10 @@ const Main = (props) => {
       acc += currentSegment.duration;
       return acc;
     }, 0);
-
     const durationB = b.segments.reduce((acc, currentSegment) => {
       acc += currentSegment.duration;
       return acc;
     }, 0);
-
     if (durationA < durationB) {
       return -1;
     }
@@ -43,21 +42,15 @@ const Main = (props) => {
   };
 
   const sortAndFilterTickets = () => {
-    const {
-      sortTicket,
-      tickets,
-      filters: { directFlight, one, two, three },
-    } = props;
+    const { sortTicket, tickets, transferFilters } = props;
     if (!tickets.length) return [];
 
     let newArrTickets = [];
 
-    if (!checkFiltersTrue()) {
-      if (directFlight) newArrTickets = newArrTickets.concat(filterForTransferCount(tickets, 0));
-      if (one) newArrTickets = newArrTickets.concat(filterForTransferCount(tickets, 1));
-      if (two) newArrTickets = newArrTickets.concat(filterForTransferCount(tickets, 2));
-      if (three) newArrTickets = newArrTickets.concat(filterForTransferCount(tickets, 3));
-      newArrTickets = [...new Set(newArrTickets)];
+    if (checkFiltersFalse()) {
+      newArrTickets = [];
+    } else if (!checkFiltersTrue()) {
+      newArrTickets = filterForTransferCount(tickets, transferFilters);
     } else {
       newArrTickets = [...tickets];
     }
@@ -70,39 +63,46 @@ const Main = (props) => {
     return newArrTickets.slice(0, countShowCard);
   };
 
-  const filterForTransferCount = (arr, stopsCount) => {
-    return arr.filter((ticket) => {
-      let flag = false;
-      ticket.segments.forEach((elem) => {
-        if (elem.stops.length === stopsCount) {
-          flag = true;
+  const filterForTransferCount = (arr, filters = {}) => {
+    const arrFilter = arr.filter((ticket) => {
+      let flag = true;
+      const countStopsArr = ticket.segments.map((segment) => segment.stops.length);
+      countStopsArr.forEach((countStops) => {
+        if (!filters[`${countStops}`]) {
+          flag = false;
           return;
         }
       });
+
       return flag;
     });
+    return arrFilter;
   };
 
   const checkFiltersTrue = () => {
-    for (const key in props.filters) {
-      if (!props.filters[key]) return false;
+    for (const key in props.transferFilters) {
+      if (!props.transferFilters[key]) return false;
     }
     return true;
   };
 
   const checkFiltersFalse = () => {
-    for (const key in props.filters) {
-      if (props.filters[key]) return false;
+    for (const key in props.transferFilters) {
+      if (props.transferFilters[key]) return false;
     }
     return true;
   };
 
-  const { loading, error } = props;
+  const { loading, error, transferFilters, setTransferFilter } = props;
 
   return (
     <main>
       <section className={mainStyle['flex']}>
-        <FiltersCountTransfers className={mainStyle['filters-count-transfers']} />
+        <FiltersCountTransfers
+          className={mainStyle['filters-count-transfers']}
+          filters={transferFilters}
+          setFilter={setTransferFilter}
+        />
         <div className={mainStyle['content']}>
           <FiltersFlights />
           <ListFlights
@@ -128,8 +128,14 @@ const mapsStateToProps = (state) => {
     tickets: state.tickets.items,
     loading: state.tickets.isFetching,
     sortTicket: state.sort,
-    filters: state.transfersFilter,
+    transferFilters: state.transfersFilter,
     error: state.tickets.error,
   };
 };
-export default connect(mapsStateToProps)(Main);
+
+const mapsDispatchToProps = (dispatch) => {
+  return {
+    setTransferFilter: (transfers) => dispatch(setTransferFilter(transfers)),
+  };
+};
+export default connect(mapsStateToProps, mapsDispatchToProps)(Main);

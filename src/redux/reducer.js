@@ -11,10 +11,10 @@ import {
 } from './actionName';
 
 const initialStateTransers = {
-  directFlight: false,
-  one: false,
-  two: false,
-  three: false,
+  0: false,
+  1: false,
+  2: false,
+  3: false,
 };
 
 const inititalStateTickets = {

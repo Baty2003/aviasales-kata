@@ -1,76 +1,77 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-
-import { setTransferFilter } from '../../redux/actions';
 
 import filtersCountTransfersStyle from './FiltersCountTransfers.module.scss';
 
 const FiltersCountTransfers = (props) => {
-  const { transfersFilter, setTransferFilter } = props;
-  const [statusAllTransfers, setStatusAllTransfers] = useState(true);
+  const { filters, setFilter } = props;
+  const keyFilters = Object.keys(filters);
+  const [statusAllFilters, setStatusAllFilters] = useState(true);
 
   const clickCheckBox = (e) => {
     const value = e.target.value;
-    setTransferFilter({ ...transfersFilter, [value]: !transfersFilter[value] });
+    setFilter({ ...filters, [value]: !filters[value] });
   };
 
   const changeStatusCheckBoxAll = (status) => {
-    setStatusAllTransfers(status);
+    setStatusAllFilters(status);
   };
 
   const uncheckAllCheckBox = () => {
     const newState = {};
-    for (const key in transfersFilter) {
+    for (const key in filters) {
       newState[key] = false;
     }
-    setTransferFilter(newState);
+    setFilter(newState);
   };
 
   const checkAllCheckBox = () => {
     const newState = {};
-    for (const key in transfersFilter) {
+    for (const key in filters) {
       newState[key] = true;
     }
-    setTransferFilter(newState);
+    setFilter(newState);
   };
 
+  const sklonenie = (number, txt = ['пересадка', 'пересадки', 'пересадок'], cases = [2, 0, 1, 1, 1, 2]) =>
+    txt[number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]];
+
   useEffect(() => {
-    if (statusAllTransfers) {
+    if (statusAllFilters) {
       checkAllCheckBox();
     } else {
-      for (const key in transfersFilter) {
-        if (transfersFilter[key] !== true) {
+      for (const key in filters) {
+        if (filters[key] !== true) {
           return;
         }
       }
       uncheckAllCheckBox();
     }
-  }, [statusAllTransfers]);
+  }, [statusAllFilters]);
 
   useEffect(() => {
-    if (statusAllTransfers) {
-      for (const key in transfersFilter) {
-        if (transfersFilter[key] === false) {
+    if (statusAllFilters) {
+      for (const key in filters) {
+        if (filters[key] === false) {
           changeStatusCheckBoxAll(false);
           return;
         }
       }
     }
 
-    if (!statusAllTransfers) {
-      for (const key in transfersFilter) {
-        if (transfersFilter[key] === false) {
+    if (!statusAllFilters) {
+      for (const key in filters) {
+        if (filters[key] === false) {
           return;
         }
       }
       changeStatusCheckBoxAll(true);
       return;
     }
-  }, [transfersFilter]);
+  }, [filters]);
 
   useEffect(() => {
-    setStatusAllTransfers(true);
+    setStatusAllFilters(true);
   }, []);
 
   return (
@@ -81,86 +82,44 @@ const FiltersCountTransfers = (props) => {
       <label className={filtersCountTransfersStyle['label']}>
         <input
           type="checkbox"
-          name=""
-          id=""
           value="all"
           className={filtersCountTransfersStyle['checkbox']}
           onChange={() => {
-            setStatusAllTransfers((state) => !state);
+            setStatusAllFilters((state) => !state);
           }}
-          checked={statusAllTransfers && true}
+          checked={statusAllFilters && true}
         />
         <span className={filtersCountTransfersStyle['label-span']}>Все</span>
       </label>
-      <label className={filtersCountTransfersStyle['label']}>
-        <input
-          type="checkbox"
-          name=""
-          id=""
-          value="directFlight"
-          className={filtersCountTransfersStyle['checkbox']}
-          onChange={clickCheckBox}
-          checked={transfersFilter.directFlight && true}
-        />
-        <span className={filtersCountTransfersStyle['label-span']}>Без пересадок</span>
-      </label>
-      <label className={filtersCountTransfersStyle['label']}>
-        <input
-          type="checkbox"
-          name=""
-          id=""
-          className={filtersCountTransfersStyle['checkbox']}
-          value="one"
-          onChange={clickCheckBox}
-          checked={transfersFilter.one && true}
-        />
-        <span className={filtersCountTransfersStyle['label-span']}>1 пересадка</span>
-      </label>
-      <label className={filtersCountTransfersStyle['label']}>
-        <input
-          type="checkbox"
-          name=""
-          id=""
-          value="two"
-          className={filtersCountTransfersStyle['checkbox']}
-          onChange={clickCheckBox}
-          checked={transfersFilter.two && true}
-        />
-        <span className={filtersCountTransfersStyle['label-span']}>2 пересадки</span>
-      </label>
-      <label className={filtersCountTransfersStyle['label']}>
-        <input
-          type="checkbox"
-          name=""
-          id=""
-          value="three"
-          className={filtersCountTransfersStyle['checkbox']}
-          onChange={clickCheckBox}
-          checked={transfersFilter.three && true}
-        />
-        <span className={filtersCountTransfersStyle['label-span']}>3 пересадки</span>
-      </label>
+      {keyFilters.map((keyTransferFilter) => {
+        return (
+          <label key={keyTransferFilter} className={filtersCountTransfersStyle['label']}>
+            <input
+              type="checkbox"
+              value={keyTransferFilter}
+              className={filtersCountTransfersStyle['checkbox']}
+              onChange={clickCheckBox}
+              checked={filters[keyTransferFilter] && true}
+            />
+            <span className={filtersCountTransfersStyle['label-span']}>
+              {keyTransferFilter === '0'
+                ? 'Без пересадок'
+                : keyTransferFilter + ' ' + sklonenie(parseInt(keyTransferFilter))}
+            </span>
+          </label>
+        );
+      })}
     </div>
   );
 };
 
 FiltersCountTransfers.defaultProps = {
-  transfersFilter: { directFlight: false, one: false, two: false, three: false },
   setTransferFilter: () => {},
 };
 FiltersCountTransfers.propTypes = {
   className: PropTypes.string,
-  transfersFilter: PropTypes.object,
+  transfersFilters: PropTypes.object,
   setTransferFilter: PropTypes.func,
 };
 
-const mapsStateToProps = (state) => {
-  return { transfersFilter: state.transfersFilter };
-};
-const mapsDispatchToProps = (dispatch) => {
-  return {
-    setTransferFilter: (transfers) => dispatch(setTransferFilter(transfers)),
-  };
-};
-
-export default connect(mapsStateToProps, mapsDispatchToProps)(FiltersCountTransfers);
+export default FiltersCountTransfers;
