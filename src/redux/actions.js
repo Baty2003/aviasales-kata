@@ -48,7 +48,7 @@ export const setErrorGetTickets = () => {
 
 export const requestSearchId = () => (dispatch) => {
   setStatusIsFetching(true);
-  return fetch('https://front-test.dev.aviasales.ru/search')
+  return fetch('https://aviasales-test-api.kata.academy/search')
     .then(
       (response) => response.json(),
       (error) => console.log(error),
@@ -57,7 +57,7 @@ export const requestSearchId = () => (dispatch) => {
 };
 
 export const requestTickets = (searchId) => (dispatch) => {
-  return fetch(`https://front-test.dev.aviasales.ru/tickets?searchId=${searchId}`)
+  return fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${searchId}`)
     .then((response) => response.json())
     .then(({ tickets, stop }) => {
       dispatch(setTickets(tickets));
